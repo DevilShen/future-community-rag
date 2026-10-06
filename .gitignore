@@ -1,0 +1,38 @@
+# ---------- 密钥与本地配置（绝不提交）----------
+.env
+
+# ---------- 向量库本地持久化目录 ----------
+chroma_db/
+eval_chroma/
+*.sqlite3
+
+# ---------- 不上传的真实语料（内部文档，仅本地保留）----------
+# corpus/ 下为真实客户/项目文档（行业标准、交付流程、操作手册、交付文档、过往案例）
+# 公开仓库中只保留 corpus_samples/ 的虚构示例
+corpus/
+corpus_samples/01_行业标准/
+corpus_samples/02_交付流程/
+
+# ---------- Python 运行时产物 ----------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# ---------- 测试 / 缓存 ----------
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---------- 编辑器 / 系统 ----------
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# ---------- 与项目无关的本地文件 ----------
+corpus.lnk
+.claude/settings.local.json
+.workbuddy/

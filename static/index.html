@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#1e6fff" />
+  <title>未来社区 · 智慧物业知识库</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div id="app" class="app">
+    <!-- ============ 左栏：知识库工作台 ============ -->
+    <aside id="sidebar" class="sidebar" aria-label="知识库导航">
+      <div class="brand">
+        <span class="brand__logo">🏘️</span>
+        <div class="brand__text">
+          <h1>未来社区</h1>
+          <p>智慧物业知识库</p>
+        </div>
+      </div>
+
+      <!-- 统计卡：总片段数 + 五类分布条（数据来自 /api/categories） -->
+      <section class="stat-card">
+        <div class="stat-card__num">
+          <strong id="statTotal">—</strong><span>个知识片段</span>
+        </div>
+        <div id="distBar" class="dist">
+          <p class="dist__placeholder">正在加载…</p>
+        </div>
+      </section>
+
+      <!-- 分类筛选树 -->
+      <div class="side-block">
+        <div class="side-block__title">分类筛选</div>
+        <nav id="categoryNav" class="cat-nav" aria-label="分类筛选"></nav>
+      </div>
+
+      <!-- 历史会话（localStorage 持久化） -->
+      <div class="side-block side-block--grow">
+        <div class="side-block__title">
+          <span>历史会话</span>
+          <button id="newSessionBtn" class="btn-new" type="button">＋ 新建</button>
+        </div>
+        <ul id="historyList" class="history"></ul>
+      </div>
+
+      <div class="sidebar__foot">
+        <span id="statusBadge" class="badge badge--loading">连接中…</span>
+        <span id="modelInfo" class="sidebar__model"></span>
+      </div>
+    </aside>
+
+    <!-- 移动端抽屉遮罩 -->
+    <div id="backdrop" class="backdrop" aria-hidden="true"></div>
+
+    <!-- ============ 右栏：问答主区 ============ -->
+    <div class="main">
+      <header class="topbar">
+        <button id="menuBtn" class="menu-btn" type="button" aria-label="打开侧栏">☰</button>
+        <div class="topbar__title">
+          <h2 id="chatTitle">智能问答</h2>
+          <p id="chatSub" class="topbar__sub">全库检索</p>
+        </div>
+      </header>
+
+      <!-- 知识库为空时的提示条 -->
+      <div id="emptyBanner" class="banner banner--hidden">
+        知识库为空：请先运行 <code>python ingest.py</code> 把语料入库。
+      </div>
+
+      <!-- 聊天区 -->
+      <main id="chat" class="chat" aria-live="polite">
+        <!-- 推荐问题由 JS 渲染，作为空态引导 -->
+        <div id="recommended" class="recommended"></div>
+      </main>
+
+      <!-- 输入区 -->
+      <footer class="composer">
+        <form id="askForm" class="composer__form" autocomplete="off">
+          <input
+            id="questionInput"
+            class="composer__input"
+            type="text"
+            placeholder="输入你的问题，例如：承接查验包括哪些内容？"
+            maxlength="200"
+          />
+          <button id="sendBtn" class="composer__send" type="submit" aria-label="发送">发送</button>
+        </form>
+        <p class="composer__hint">回答附来源引用与匹配度；展开来源后点定位串可查看该片段在文档中的原文。</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ============ 引用原文阅读器 ============
+       桌面居中弹层 / 手机全屏；内容是按需拉取后由 JS 填充，初始为空骨架。
+       放在 #app 之外，避免继承侧栏与主区的布局约束。 -->
+  <div id="docViewer" class="viewer viewer--hidden" role="dialog" aria-modal="true" aria-labelledby="viewerTitle">
+    <div class="viewer__sheet">
+      <header class="viewer__head">
+        <div class="viewer__titles">
+          <h3 id="viewerTitle" class="viewer__title">—</h3>
+          <p id="viewerMeta" class="viewer__meta"></p>
+        </div>
+        <button id="viewerClose" class="viewer__close" type="button" aria-label="关闭">✕</button>
+      </header>
+      <div id="viewerBody" class="viewer__body"></div>
+      <footer class="viewer__foot">
+        <span id="viewerHitInfo" class="viewer__hitinfo"></span>
+        <button id="viewerLocate" class="viewer__locate" type="button">回到命中处</button>
+      </footer>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
